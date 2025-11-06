@@ -9,13 +9,13 @@
 
 namespace argos {
 
-   class Controller0 : public CCI_Controller {
+   class Controller1 : public CCI_Controller {
 
    public:
 
-      Controller0() {}
+      Controller1() {}
 
-      virtual ~Controller0() {}
+      virtual ~Controller1() {}
 
       void Init(TConfigurationNode& t_tree) override;
 
