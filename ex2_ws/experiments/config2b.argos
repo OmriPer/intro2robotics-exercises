@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<argos-configuration>
+
+  <!-- ************************* -->
+  <!-- * General configuration * -->
+  <!-- ************************* -->
+  <framework>
+    <system threads="0" />
+    <!-- The robot has 30 minutes. Change random_seed to get a different random walk. -->
+    <experiment length="1800" ticks_per_second="10" random_seed="2" />
+  </framework>
+
+  <!-- *************** -->
+  <!-- * Controllers * -->
+  <!-- *************** -->
+  <controllers>
+    <controller2 library="build/lib/libpipuck_controller2"
+                 id="controller2">
+      <actuators>
+        <pipuck_differential_drive implementation="default" />
+        <pipuck_leds implementation="color" medium="leds" />
+      </actuators>
+      <sensors>
+        <colored_blob_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="true" />
+        <pipuck_rangefinders implementation="default" show_rays="true" />
+        <pipuck_system implementation="default" />
+        <positioning implementation="default" />
+      </sensors>
+      <params />
+    </controller2>
+  </controllers>
+
+  <!-- ****************** -->
+  <!-- * Loop functions * -->
+  <!-- ****************** -->
+  <loop_functions library="build/lib/libhw2_loop_functions"
+                  label="hw2_loop_functions" />
+
+  <!-- *********************** -->
+  <!-- * Arena configuration * -->
+  <!-- *********************** -->
+  <arena size="4, 4, 1" positional_index="grid">
+    <!-- walls -->
+    <box id="wall_north" size="4,0.1,0.5" movable="false"><body position="0,2,0" orientation="0,0,0"/></box>
+    <box id="wall_south" size="4,0.1,0.5" movable="false"><body position="0,-2,0" orientation="0,0,0"/></box>
+    <box id="wall_east" size="0.1,4,0.5" movable="false"><body position="2,0,0" orientation="0,0,0"/></box>
+    <box id="wall_west" size="0.1,4,0.5" movable="false"><body position="-2,0,0" orientation="0,0,0"/></box>
+
+    <!-- obstacles: each one fills exactly one cell of the 8 x 8 grid -->
+    <box id="box_3_7" size="0.5,0.5,0.3" movable="false"><body position="-0.25,1.75,0" orientation="0,0,0"/></box>
+    <box id="box_3_6" size="0.5,0.5,0.3" movable="false"><body position="-0.25,1.25,0" orientation="0,0,0"/></box>
+    <box id="box_6_6" size="0.5,0.5,0.3" movable="false"><body position="1.25,1.25,0" orientation="0,0,0"/></box>
+    <box id="box_1_4" size="0.5,0.5,0.3" movable="false"><body position="-1.25,0.25,0" orientation="0,0,0"/></box>
+    <box id="box_2_4" size="0.5,0.5,0.3" movable="false"><body position="-0.75,0.25,0" orientation="0,0,0"/></box>
+    <box id="box_3_4" size="0.5,0.5,0.3" movable="false"><body position="-0.25,0.25,0" orientation="0,0,0"/></box>
+    <box id="box_6_4" size="0.5,0.5,0.3" movable="false"><body position="1.25,0.25,0" orientation="0,0,0"/></box>
+    <box id="box_7_4" size="0.5,0.5,0.3" movable="false"><body position="1.75,0.25,0" orientation="0,0,0"/></box>
+    <box id="box_2_2" size="0.5,0.5,0.3" movable="false"><body position="-0.75,-0.75,0" orientation="0,0,0"/></box>
+    <box id="box_5_2" size="0.5,0.5,0.3" movable="false"><body position="0.75,-0.75,0" orientation="0,0,0"/></box>
+    <box id="box_2_1" size="0.5,0.5,0.3" movable="false"><body position="-0.75,-1.25,0" orientation="0,0,0"/></box>
+    <box id="box_5_1" size="0.5,0.5,0.3" movable="false"><body position="0.75,-1.25,0" orientation="0,0,0"/></box>
+
+    <!-- the robot. camera_aperture="86" lets its camera see about 1.4 m around it -->
+    <pipuck id="pipuck0" led_medium="leds" camera_aperture="86">
+      <body position="1.6,-1.65,0" orientation="90,0,0"/>
+      <controller config="controller2"/>
+    </pipuck>
+
+    <!-- the target -->
+    <light id="target" color="red" intensity="100" medium="leds"
+           position="-1.6,1.55,0"/>
+  </arena>
+
+  <!-- ******************* -->
+  <!-- * Physics engines * -->
+  <!-- ******************* -->
+  <physics_engines>
+    <dynamics2d id="dyn2d" />
+  </physics_engines>
+
+  <!-- ********* -->
+  <!-- * Media * -->
+  <!-- ********* -->
+  <media>
+    <led id="leds"/>
+  </media>
+
+  <!-- ****************** -->
+  <!-- * Visualization * -->
+  <!-- ****************** -->
+  <visualization>
+    <qt-opengl show_boundary="false">
+      <user_functions library="build/lib/libhw2_loop_functions"
+                      label="hw2_qt_user_functions" />
+      <camera>
+        <placements>
+          <placement index="0" position="0,0,4.5" look_at="0,0,0" up="0,1,0"/>
+        </placements>
+      </camera>
+    </qt-opengl>
+  </visualization>
+
+</argos-configuration>
